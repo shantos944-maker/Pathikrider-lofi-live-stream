@@ -1,4 +1,4 @@
-name: 24h_Stream
+name: Alpha_Project_CI
 on:
   schedule:
     - cron: '0 */6 * * *'
