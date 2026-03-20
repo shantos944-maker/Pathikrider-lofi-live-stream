@@ -1,16 +1,22 @@
 name: Alpha_Project_CI
+
 on:
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
+
 jobs:
   stream:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
     - name: Install FFmpeg
-      run: sudo apt-get install -y ffmpeg
+      run: |
+        sudo apt-get update --fix-missing
+        sudo apt-get install -y ffmpeg
+
     - name: Start Streaming
       timeout-minutes: 355
       run: |
