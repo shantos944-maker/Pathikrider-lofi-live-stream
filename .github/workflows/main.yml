@@ -17,10 +17,13 @@ jobs:
         sudo apt-get update --fix-missing
         sudo apt-get install -y ffmpeg
 
-    - name: Start Streaming
+    - name: Start Streaming with Auto-Loop
       timeout-minutes: 355
       run: |
-        ffmpeg -re -stream_loop -1 -i video.mp4 \
-        -vcodec libx264 -preset veryfast -b:v 1000k -maxrate 1000k -bufsize 2000k \
-        -s 854x480 -pix_fmt yuv420p -g 60 -acodec aac -b:a 96k -ar 44100 \
-        -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.STREAM_KEY }}"
+        while true; do
+          ffmpeg -re -stream_loop -1 -i video.mp4 \
+          -vcodec libx264 -preset veryfast -b:v 1000k -maxrate 1000k -bufsize 2000k \
+          -s 854x480 -pix_fmt yuv420p -g 60 -acodec aac -b:a 96k -ar 44100 \
+          -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.STREAM_KEY }}" || echo "Restarting Stream..."
+          sleep 5
+        done
